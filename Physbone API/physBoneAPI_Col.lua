@@ -6,6 +6,7 @@
 
 physBone = {}
 collider = {}
+debug = false
 -- Time variables
 local previousTime = client:getSystemTime() -- Milliseconds
 local currentTime = client:getSystemTime() -- Milliseconds
@@ -37,10 +38,22 @@ function events.entity_init()
 				path 	= v,
 				pos 	= v:partToWorldMatrix():apply(),
 				size 	= .5,
+				enabled = true,
+				influence = {},
 				--Set distanceScale (just print out the distance or something to figure out the scale, 0.5 worked decently for me)
+				setEnabled = 
+					function(self,data)
+						self.enabled = data
+						end,
 				setSize = 
 					function(self,data)
 						self.size=data
+
+						end,
+				--list of physbones
+				addInfluence = 
+					function(data)
+						collider[name].influence[data]=physBone[data]
 						end
 				}
 			end		
@@ -153,25 +166,40 @@ function events.tick()
 		
 		--Calculate Collision 
 		-- this is terrible but kinda workswell enough i suppose
+		-- check if colliders exist on the model
 		if hasColliders then
 			for k1,v1 in pairs(collider) do
+			-- check if collider is enabled, check if collider has influence
+			if collider[k1].enabled and exists(collider[k1].influence,physBone[k].ID) then
 				collider[k1].pos = collider[k1].path:partToWorldMatrix()
 				physObj = physBone[k].pos
 				colObj = collider[k1].pos
 				dx = (physObj[1] - colObj[4][1])^2
 				dy = (physObj[2] - colObj[4][2])^2
 				dz = (physObj[3] - colObj[4][3])^2
-				distance = math.sqrt(dx+dy+dy)		
+				distance = math.sqrt(dx+dy+dz)		
 				--print(distance)
-				if distance <=collider[k1].size then
-					--print(physBone[k].path,collider[k1].path)
-					physBone[k].rot = vec(pitch/2,0,yaw/2)
+				if distance <= collider[k1].size then
+					if debug then
+						print(physBone[k].path,collider[k1].path)
+					end
+					physBone[k].rot = vec(-pitch*.4,0,-yaw*.4)
+				end
+				
 				end
 			end
 		end
 	end
 end
 
+function exists(table,value)
+	for i, f in pairs(table) do
+		if i == value then
+			return true
+		end
+	end
+	return false
+end
 
 function events.render(delta)
 	for k,v in pairs(physBone) do
