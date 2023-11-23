@@ -19,6 +19,12 @@ When accessing a function with the physbone API, you'll need to enter your `part
 
 Due to how this works, it edits the Blockbench file structure. Due to this, if you're using the default blockbench file path, you won't be able to access model parts inside any part you labled as a physbone. They will have been moved to a new location. This is inside the PYC group (pitch yaw correction group, located in your physbone group), and then inside that, in the RC group (rotation correction group). These names are also prefixes, and use the same name as your original group name. For example, if your file path was originally `models.model.Head.physBoneHair.bow`, it will now become `models.model.Head.physBoneHair.PYCphysBoneHair.RCphysBoneHair.bow`.
 
+collider function (there is only one right now):
+### setSize()
+Sets the "size" of the collider, distance to point. default is  `0.5`.
+```lua
+collider.partName:setSize(value)
+```
 The functions are the following:
 ### setGravity()
 Sets the strength of gravity for that physbone. Default is `-9.81`, and the value is an integer.
