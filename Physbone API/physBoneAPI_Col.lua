@@ -44,8 +44,9 @@ function events.entity_init()
 						end
 				}
 			end
-			if (collider)==nil then
+			if next(collider)==nil then
 				hasColliders = false
+				
 			end			
 			--PhysBone
 			if string.find(name,'physBone',0) and not (string.find(name,'PYC',0) or string.find(name,'RC',0)) then
