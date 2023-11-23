@@ -155,7 +155,7 @@ function events.tick()
 			dy = (physObj[2] - colObj[4][2])^2
 			dz = (physObj[3] - colObj[4][3])^2
 			distance = math.sqrt(dx+dy+dy)		
-			print(physBone[k].path,collider[k1].path)
+			--print(physBone[k].path,collider[k1].path)
 			
 			if distance >collider[k1].size then
 				physBone[k].rot = vec(pitch,0,yaw)
