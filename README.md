@@ -33,7 +33,16 @@ collider.partName:setEnable(value)
 ### addInfluence()
 Add a physBone to the colliders hitreg, default is nil, ~String
 ```lua
+-- must do this for every bone you want
 collider.partName:addInfluence("physBoneName")
+```
+or
+```lua
+-- be smart and use a list
+list = {"physBone1","physBone2","physBone3"}
+for foo,bar in pairs(list) do 
+  collider.partName:addInfluence(bar)
+end
 ```
 
 The functions are the following:
