@@ -19,6 +19,8 @@ local function updateTime()
 	previousTime = currentTime
 end
 
+local hasColliders = true
+
 local function getPos(obj)
 	return obj.path:partToWorldMatrix():apply()
 end
@@ -42,6 +44,9 @@ function events.entity_init()
 						end
 				}
 			end
+			if (collider)==nil then
+				hasColliders = false
+			end			
 			--PhysBone
 			if string.find(name,'physBone',0) and not (string.find(name,'PYC',0) or string.find(name,'RC',0)) then
 				physBone[name] = {
@@ -147,19 +152,23 @@ function events.tick()
 		
 		--Calculate Collision 
 		-- this is terrible but kinda workswell enough i suppose
-		for k1,v1 in pairs(collider) do
-			collider[k1].pos = collider[k1].path:partToWorldMatrix()
-			physObj = physBone[k].pos
-			colObj = collider[k1].pos
-			dx = (physObj[1] - colObj[4][1])^2
-			dy = (physObj[2] - colObj[4][2])^2
-			dz = (physObj[3] - colObj[4][3])^2
-			distance = math.sqrt(dx+dy+dy)		
-			--print(physBone[k].path,collider[k1].path)
-			
-			if distance >collider[k1].size then
-				physBone[k].rot = vec(pitch,0,yaw)
+		if hasColliders then
+			for k1,v1 in pairs(collider) do
+				collider[k1].pos = collider[k1].path:partToWorldMatrix()
+				physObj = physBone[k].pos
+				colObj = collider[k1].pos
+				dx = (physObj[1] - colObj[4][1])^2
+				dy = (physObj[2] - colObj[4][2])^2
+				dz = (physObj[3] - colObj[4][3])^2
+				distance = math.sqrt(dx+dy+dy)		
+				--print(physBone[k].path,collider[k1].path)
+				
+				if distance >collider[k1].size then
+					physBone[k].rot = vec(pitch,0,yaw)
+				end
 			end
+		else
+			physBone[k].rot = vec(pitch,0,yaw)
 		end
 	end
 end
