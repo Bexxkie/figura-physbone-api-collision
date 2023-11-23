@@ -4,6 +4,11 @@ A cheap, easy to use, and highly customisable physics system.
 To install the physbone API, simply add `physBoneAPI.lua` into your script. Obviously if you use autoScripts in avatar.json, add it there.
 ## Basic Physics
 To add basic physics to a model part, simply add the `physBone` prefix to the name of your model part. For example, a model part named `swingingLamp` could be renamed to `physBoneSwingingLamp` or `physBone_swingLamp`. This works exactly the same as parent types (Blockbench keywords), so you can just treat it as the physbone parent type if you like, but it technically isn't. Once you've set the keyword, it should have physics in game!
+## Basic Collision
+!Colliders currently affect all your physBones! Probably shouldnt have both on the same object, havent tested it, but it'll probably break.
+Works the same as adding a physBone, just use `collider` as a prefix instead
+
+
 ## PhysBone API
 You can run many functions to customize how the physics behave, all of which will be described here.
 
