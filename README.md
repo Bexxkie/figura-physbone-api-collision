@@ -6,8 +6,7 @@ To install the physbone API *but with bad collision*, simply add `physBoneAPI_Co
 ## Basic Physics
 To add basic physics to a model part, simply add the `physBone` prefix to the name of your model part. For example, a model part named `swingingLamp` could be renamed to `physBoneSwingingLamp` or `physBone_swingLamp`. This works exactly the same as parent types (Blockbench keywords), so you can just treat it as the physbone parent type if you like, but it technically isn't. Once you've set the keyword, it should have physics in game!
 ## Basic Collision
-!Colliders currently affect all your physBones! Probably shouldnt have both on the same object, havent tested it, but it'll probably break.
-Works the same as adding a physBone, just use `collider` as a prefix instead
+Place a box somewhere on your model, give it a `transparent` texture call it something like `collider_torso` 
 
 
 ## PhysBone API
@@ -20,12 +19,23 @@ When accessing a function with the physbone API, you'll need to enter your `part
 
 Due to how this works, it edits the Blockbench file structure. Due to this, if you're using the default blockbench file path, you won't be able to access model parts inside any part you labled as a physbone. They will have been moved to a new location. This is inside the PYC group (pitch yaw correction group, located in your physbone group), and then inside that, in the RC group (rotation correction group). These names are also prefixes, and use the same name as your original group name. For example, if your file path was originally `models.model.Head.physBoneHair.bow`, it will now become `models.model.Head.physBoneHair.PYCphysBoneHair.RCphysBoneHair.bow`.
 
-collider function (there is only one right now):
+collider function:
 ### setSize()
-Sets the "size" of the collider, distance to point. default is  `0.5`.
+Sets the "size" of the collider, distance to point. default is  `0.5`. play with this, it may vary ~int
 ```lua
 collider.partName:setSize(value)
 ```
+### setEnabled()
+Enable or Disable the collider, default is true. ~bool
+```lua
+collider.partName:setEnable(value)
+```
+### addInfluence()
+Add a physBone to the colliders hitreg, default is nil, ~String
+```lua
+collider.partName:addInfluence("physBoneName")
+```
+
 The functions are the following:
 ### setGravity()
 Sets the strength of gravity for that physbone. Default is `-9.81`, and the value is an integer.
