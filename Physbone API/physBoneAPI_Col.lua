@@ -43,11 +43,7 @@ function events.entity_init()
 						self.size=data
 						end
 				}
-			end
-			if next(collider)==nil then
-				hasColliders = false
-				
-			end			
+			end		
 			--PhysBone
 			if string.find(name,'physBone',0) and not (string.find(name,'PYC',0) or string.find(name,'RC',0)) then
 				physBone[name] = {
@@ -116,6 +112,9 @@ function events.entity_init()
 		end
 	end
 	findCustomParentTypes(models)
+	if next(collider)==nil then
+		hasColliders = false
+	end	
 end
 
 function events.tick()
@@ -149,6 +148,7 @@ function events.tick()
 		relativeVec = vectors.rotateAroundAxis(90,relativeVec,vec(-1,0,0))
 		yaw = math.deg(math.atan2(relativeVec.x,relativeVec.z))
 		pitch = math.deg(math.asin(-relativeVec.y))
+		physBone[k].rot = vec(pitch,0,yaw)
 		-- move the rot update to after the collision check (should probably do the same with setPos)
 		
 		--Calculate Collision 
@@ -162,14 +162,12 @@ function events.tick()
 				dy = (physObj[2] - colObj[4][2])^2
 				dz = (physObj[3] - colObj[4][3])^2
 				distance = math.sqrt(dx+dy+dy)		
-				--print(physBone[k].path,collider[k1].path)
-				
-				if distance >collider[k1].size then
-					physBone[k].rot = vec(pitch,0,yaw)
+				--print(distance)
+				if distance <=collider[k1].size then
+					--print(physBone[k].path,collider[k1].path)
+					physBone[k].rot = vec(pitch/2,0,yaw/2)
 				end
 			end
-		else
-			physBone[k].rot = vec(pitch,0,yaw)
 		end
 	end
 end
